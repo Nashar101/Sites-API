@@ -1,6 +1,9 @@
 class SitesController < ApplicationController
+  respond_to :json
   def index
-    render json: Site.all
+    if params[:user_id].present?
+      render json: Site.all.where("user_id = ?", params[:user_id])
+    end
   end
 
   def create

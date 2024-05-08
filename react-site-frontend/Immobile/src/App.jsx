@@ -1,15 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import sitesList from "./features/sites/SitesList.jsx";
-import SitesList from "./features/sites/SitesList.jsx";
-function App() {
-  const [count, setCount] = useState(0)
+import {BrowserRouter as Router} from "react-router-dom";
+import AppRoutes from "./components/AppRoutes.jsx";
+import {useState} from "react";
+import User from './components/User'
+import PrivateText from './components/PrivateText'
 
-  return (
-       <div><SitesList/></div>
-  )
+function App() {
+    const [currUser, setCurrUser]=useState(null);
+    return (
+            <div className="App">
+                <User currUser={currUser} setCurrUser={setCurrUser}/>
+            </div>
+    )
 }
 
 export default App

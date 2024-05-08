@@ -1,6 +1,7 @@
-import React, {useState} from "react";
-function SitesList(){
-    const [posts, setPosts] = useState([]);
+import React, {useState, useEffect} from "react";
+import {API_URL} from "../../constants.js";
+const SitesList  = ({ setCurrUser, setShow }) => {
+    const [sites, setSites] = useState([]);
     const [, setLoading] = useState(true);
     const [, setError] = useState(null);
 
@@ -22,12 +23,19 @@ function SitesList(){
     }
     // Fetch posts from API
     useEffect(() => {
-        async function loadPosts(){
+        async function loadSites(){
             try{
-                const response = await fetch(API_URL)
+                const response = await fetch(API_URL, {
+                    method: 'post',
+                    headers: {
+                        "content-type": 'application/json',
+                        "accept": "application/json"
+                    },
+                    body: JSON.stringify(userInfo)
+                })
                 if(response.ok){
                     const json = await response.json();
-                    setPosts(json)
+                    setSites(json)
                 }
                 else{
                     throw response;
@@ -40,12 +48,13 @@ function SitesList(){
             }
 
         }
-        loadPosts()
+        loadSites()
     }, [])
     return (<div>
-        {posts.map((post) => (
-            <div key={post.id} className="post-container">
-                <h2><Link to={`/posts/${post.id}`}>{post.title}</Link></h2>
+        {sites.map((site) => (
+            <div key={site.id} className="post-container">
+                <h2>{site.url}</h2>
+                <p>{site.duration}</p>
                 <div className={"post-links"}>
                     <button onClick={(() => deletePost(post.id))}>Delete</button>
                 </div>
@@ -54,4 +63,4 @@ function SitesList(){
     </div>);
 }
 
-export default SitesList;
+export default SitesList
