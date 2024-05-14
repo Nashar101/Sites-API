@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :sites, only: [:index, :create, :destroy]
+      get '/sites/get_sites'
     end
   end
 

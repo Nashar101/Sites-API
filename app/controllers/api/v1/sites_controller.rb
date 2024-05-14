@@ -1,8 +1,14 @@
 class Api::V1::SitesController < ApplicationController
+  before_action :authenticate_user!
+  respond_to :json
   def index
     render json: Site.all
   end
 
+
+  def get_sites
+    render json: Site.all.where("user_id = ?", current_user.id)
+  end
   def create
     site = Site.new(site_params)
     if(!site.url.match(/\Ahttps?:\/\/(?:www\.)?[a-zA-Z0-9-]+(?:\.[a-zA-Z]{2,})+(?:\/[^\s]*)?\z/))

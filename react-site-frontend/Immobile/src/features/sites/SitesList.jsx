@@ -7,12 +7,16 @@ const SitesList  = ({ setCurrUser, setShow }) => {
 
     const deletePost = async(id) => {
         try{
-            //DELETE REQUEST to: http://localhost:3000/api/v1/posts/:id
+            const token = localStorage.getItem("token");
+            //DELETE REQUEST to: http://localhost:3000/api/v1/sites/:id
             const response = await fetch(`${API_URL}/${id}`, {
                 method: "DELETE",
+                headers: {
+                    Authorization: token
+                }
             });
             if (response.ok){
-                setPosts(post.filter((post) => post.id !== id));
+                setSites(sites.filter((site) => site.id !== id));
             }
             else{
                 throw response
@@ -25,13 +29,13 @@ const SitesList  = ({ setCurrUser, setShow }) => {
     useEffect(() => {
         async function loadSites(){
             try{
-                const response = await fetch(API_URL, {
-                    method: 'post',
+                const token = localStorage.getItem("token");
+                const response = await fetch(`${API_URL}/get_sites`, {
+                    method: 'get',
                     headers: {
                         "content-type": 'application/json',
-                        "accept": "application/json"
+                        Authorization: token,
                     },
-                    body: JSON.stringify(userInfo)
                 })
                 if(response.ok){
                     const json = await response.json();
@@ -56,7 +60,7 @@ const SitesList  = ({ setCurrUser, setShow }) => {
                 <h2>{site.url}</h2>
                 <p>{site.duration}</p>
                 <div className={"post-links"}>
-                    <button onClick={(() => deletePost(post.id))}>Delete</button>
+                    <button onClick={(() => deletePost(site.id))}>Delete</button>
                 </div>
             </div>
         ))}
