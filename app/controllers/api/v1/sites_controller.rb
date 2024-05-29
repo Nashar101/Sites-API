@@ -7,7 +7,7 @@ class Api::V1::SitesController < ApplicationController
 
 
   def get_sites
-    render json: Site.all.where("user_id = ?", current_user.id)
+    render json: {sites: Site.all.where("user_id = ?", current_user.id), user: current_user}
   end
   def create
     site = Site.new(site_params)
@@ -36,6 +36,6 @@ class Api::V1::SitesController < ApplicationController
   private
 
   def site_params
-    params.require(:site).permit(:url, :duration, :expiration_date)
+    params.require(:site).permit(:url, :duration, :expiration_date, :user_id)
   end
 end

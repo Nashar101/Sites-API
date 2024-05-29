@@ -34,12 +34,14 @@ const SitesList  = ({ setCurrUser, setShow }) => {
                     method: 'get',
                     headers: {
                         "content-type": 'application/json',
-                        Authorization: token,
+                        Authorization: token
                     },
                 })
+
                 if(response.ok){
                     const json = await response.json();
-                    setSites(json)
+                    console.log(json)
+                    setSites(json.sites)
                 }
                 else{
                     throw response;
